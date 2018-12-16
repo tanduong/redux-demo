@@ -3,6 +3,18 @@ import {Link} from 'react-router-dom';
 
 export class Dashboard extends Component {
   render() {
+    const coins = [
+      {
+        name: 'Bitcoin',
+        price: 3000,
+        code: 'BTC',
+      },
+      {
+        name: 'Etherium',
+        price: 300,
+        code: 'ETH',
+      },
+    ];
     return (
       <div>
         <header>Dashboard</header>
@@ -17,22 +29,16 @@ export class Dashboard extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>BTC</td>
-                <td>3000</td>
-                <td>
-                  <Link to="/coins/BTC">Show</Link>
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>ETH</td>
-                <td>300</td>
-                <td>
-                  <Link to="/coins/ETH">Show</Link>
-                </td>
-              </tr>
+              {coins.map((coin, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{coin.name}</td>
+                  <td>{coin.price}</td>
+                  <td>
+                    <Link to={`/coins/${coin.code}`}>Show</Link>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </main>
