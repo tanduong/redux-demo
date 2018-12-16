@@ -1,7 +1,34 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import {SocketDataSource} from './SocketDataSource';
+
+const watchlist = [
+  'BTC',
+  'ETH',
+  'XRP',
+  'BCH',
+  'EOS',
+  'BTG',
+  'LTC',
+  'NEO',
+  'DASH',
+  'XMR',
+  'ETC',
+  'ZEC',
+  'OMG',
+];
 
 export class Dashboard extends Component {
+  componentDidMount() {
+    const dataSource = new SocketDataSource({
+      watchlist,
+      onConnected: () => console.log('connected'),
+      onDisconnected: () => console.log('disconnected'),
+      onMessage: (message) => console.log('message', message),
+    });
+    dataSource.connect();
+  }
+
   render() {
     const coins = [
       {
@@ -15,6 +42,7 @@ export class Dashboard extends Component {
         code: 'ETH',
       },
     ];
+
     return (
       <div>
         <header>Dashboard</header>
