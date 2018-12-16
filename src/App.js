@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import './App.css';
+import {Dashboard} from './Dashboard';
 
-const Dashboard = () => <div>Dashboard</div>;
 const Details = ({match}) => <div>Details: {match.params.code}</div>;
 class App extends Component {
   render() {
@@ -12,12 +12,6 @@ class App extends Component {
           <ul>
             <li>
               <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/coins/BTC">BTC</Link>
-            </li>
-            <li>
-              <Link to="/coins/ETH">ETH</Link>
             </li>
           </ul>
           <Route path="/" exact component={Dashboard} />
