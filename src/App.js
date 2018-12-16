@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import './App.css';
-import {Dashboard} from './Dashboard';
+import Dashboard from './Dashboard';
 
 const Details = ({match}) => <div>Details: {match.params.code}</div>;
 class App extends Component {

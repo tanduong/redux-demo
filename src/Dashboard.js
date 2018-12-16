@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {SocketDataSource, parseMessage} from './SocketDataSource';
 import get from 'lodash.get';
+import {connect} from 'react-redux';
 
 const watchlist = [
   'BTC',
@@ -19,10 +20,25 @@ const watchlist = [
   'OMG',
 ];
 
-export class Dashboard extends Component {
+class Dashboard extends Component {
   state = {
     data: {},
   };
+
+  static getDerivedStateFromProps(props) {
+    return {
+      data: props.data,
+    };
+  }
+
+  updatePrice(message) {
+    if (message) {
+      this.props.dispatch({
+        type: 'PRICE_UPDATE',
+        data: message,
+      });
+    }
+  }
 
   componentDidMount() {
     const dataSource = new SocketDataSource({
@@ -32,7 +48,7 @@ export class Dashboard extends Component {
       onMessage: (rawMessage) => {
         const message = parseMessage(rawMessage, watchlist);
         console.log('message', message);
-        this.setState(({data}) => ({data: {...data, ...message}}));
+        this.updatePrice(message);
       },
     });
     dataSource.connect();
@@ -70,3 +86,17 @@ export class Dashboard extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  console.log('state', state);
+  return {
+    data: state.prices,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({dispatch});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Dashboard);
