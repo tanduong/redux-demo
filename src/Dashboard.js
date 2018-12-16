@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {SocketDataSource, parseMessage} from './SocketDataSource';
+import get from 'lodash.get';
 
 const watchlist = [
   'BTC',
@@ -19,31 +20,25 @@ const watchlist = [
 ];
 
 export class Dashboard extends Component {
+  state = {
+    data: {},
+  };
+
   componentDidMount() {
     const dataSource = new SocketDataSource({
       watchlist,
       onConnected: () => console.log('connected'),
       onDisconnected: () => console.log('disconnected'),
-      onMessage: (message) =>
-        console.log('message', parseMessage(message, watchlist)),
+      onMessage: (rawMessage) => {
+        const message = parseMessage(rawMessage, watchlist);
+        console.log('message', message);
+        this.setState(({data}) => ({data: {...data, ...message}}));
+      },
     });
     dataSource.connect();
   }
 
   render() {
-    const coins = [
-      {
-        name: 'Bitcoin',
-        price: 3000,
-        code: 'BTC',
-      },
-      {
-        name: 'Etherium',
-        price: 300,
-        code: 'ETH',
-      },
-    ];
-
     return (
       <div>
         <header>Dashboard</header>
@@ -58,13 +53,13 @@ export class Dashboard extends Component {
               </tr>
             </thead>
             <tbody>
-              {coins.map((coin, index) => (
+              {watchlist.map((code, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{coin.name}</td>
-                  <td>{coin.price}</td>
+                  <td>{code}</td>
+                  <td>{get(this.state.data, `${code}.price`)}</td>
                   <td>
-                    <Link to={`/coins/${coin.code}`}>Show</Link>
+                    <Link to={`/coins/${code}`}>Show</Link>
                   </td>
                 </tr>
               ))}

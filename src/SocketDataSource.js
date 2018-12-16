@@ -24,7 +24,7 @@ export class SocketDataSource {
 export const parseMessage = (message, watchList) => {
   // 2~Bitfinex~OMG~USD~2~1.1693~1544930214~52.60256~61.508173408~323427724~173849.29263423~195751.58047400013~1.1343~1.1775~1.0898~38ce9
   const data = message.split('~');
-  if (data[4] === '1' || data[4] === '2' || data[4] === '4') {
+  if (data[4] === '1' || data[4] === '2') {
     var fsym = data[2];
     var detail;
     if (watchList.includes(fsym)) {
