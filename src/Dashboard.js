@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Link} from 'react-router-dom';
 import {SocketDataSource, parseMessage} from './SocketDataSource';
 import get from 'lodash.get';
@@ -20,17 +20,7 @@ const watchlist = [
   'OMG',
 ];
 
-class Dashboard extends Component {
-  state = {
-    data: {},
-  };
-
-  static getDerivedStateFromProps(props) {
-    return {
-      data: props.data,
-    };
-  }
-
+class Dashboard extends PureComponent {
   updatePrice(message) {
     if (message) {
       this.props.dispatch({
@@ -73,7 +63,7 @@ class Dashboard extends Component {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{code}</td>
-                  <td>{get(this.state.data, `${code}.price`)}</td>
+                  <td>{get(this.props.data, `${code}.price`)}</td>
                   <td>
                     <Link to={`/coins/${code}`}>Show</Link>
                   </td>
