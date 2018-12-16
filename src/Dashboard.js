@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {SocketDataSource} from './SocketDataSource';
+import {SocketDataSource, parseMessage} from './SocketDataSource';
 
 const watchlist = [
   'BTC',
@@ -24,7 +24,8 @@ export class Dashboard extends Component {
       watchlist,
       onConnected: () => console.log('connected'),
       onDisconnected: () => console.log('disconnected'),
-      onMessage: (message) => console.log('message', message),
+      onMessage: (message) =>
+        console.log('message', parseMessage(message, watchlist)),
     });
     dataSource.connect();
   }
